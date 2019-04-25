@@ -1,0 +1,98 @@
+﻿@model IEnumerable<SchoolMangementdb.Models.Teacher>
+
+@{
+    ViewData["Title"] = "Teacher";
+}
+
+<h2>Teachers</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+
+            <th>Courses</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            string selectedRow = "";
+            if (item.Id == (int?)ViewData["TeacherID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+
+                <td>
+                    @{
+                        foreach (var course in item.Courses)
+                        {
+                            @course.Teacher.Id @:  @course.Teacher.Name <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.Id">Select</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (Model != null)
+{
+    <h3>Courses Taught by Selected Teacher</h3>
+    <table class="table">
+        <tr>
+          
+            <th>Number</th>
+            <th>Name</th>
+            
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            string selectedRow = "";
+            if (item.Id == (int?)ViewData["Id"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink("Select", "Index", new { id = item.Id })
+                </td>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.Name
+                </td>
+          
+            </tr>
+        }
+
+    </table>
+}
+
+
+@* Changes *@
+@* Changed the model class to TeacherIndexData.
+    Changed the page title from Index to Teachers.
+    Added an Office column that displays item.OfficeAssignment.Location only if item.OfficeAssignment isn't null.
+    (Because this is a one-to-zero-or-one relationship, there might not be a related OfficeAssignment entity.)
+    Added a Courses column that displays courses taught by each Teachers.
+    See Explicit Line Transition with @: for more about this razor syntax.
+    Added code that dynamically adds class="success" to the tr element of the selected Teacher.
+    This sets a background color for the selected row using a Bootstrap class.
+    Added a new hyperlink labeled Select immediately before the other links in each row,
+    which causes the selected instructor's ID to be sent to the Index method.*@

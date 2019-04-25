@@ -1,0 +1,21 @@
+﻿@model IEnumerable<CourseAssignment>
+@{
+    int counter = 1;
+}
+@foreach (var courseAssignment in Model)
+{
+    <div class="row align-items-center my-1">
+        <div class="col-auto mx-4 p-2">
+            @counter
+        </div>
+        <div class="col p-2">
+            @courseAssignment.Name
+        </div>
+    </div>
+    { counter++; }
+}
+@if (!Model.GetEnumerator().MoveNext())
+{
+    <h6 class="my-2 text-center">This Course Has No Assignments</h6>
+}
+
