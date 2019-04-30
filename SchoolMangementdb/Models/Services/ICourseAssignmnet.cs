@@ -8,7 +8,7 @@ namespace SchoolMangementdb.Services
 {
     public interface ICourseAssignmnet
     {
-        List<CourseAssignment> AllCourseAssignmnet();
+        List<CourseAssignment> GetAll(int courseId);
         CourseAssignment AddCourseAssignment(CourseAssignment assignment, int CourseId);
         bool RemovCourseAssignment(int id);
         bool UpdateCourseAssignment(CourseAssignment assignment);

@@ -18,20 +18,24 @@ namespace SchoolMangementdb.Repository
             this.context = context;
         }
 
-        // GetAll? 
+        // to do GetAll? 
         public CourseAssignment AddCourseAssignment(CourseAssignment assignment, int CourseId)
         {
-            var name = context.Courses
+            var course = context.Courses
                  .Include(c => c.CourseAssignments)
                  .SingleOrDefault(Course => Course.Id == CourseId);
-            name.CourseAssignments.Add(assignment);
+            course.CourseAssignments.Add(assignment);
             context.SaveChanges();
             return assignment;
         }
 
-        public List<CourseAssignment> AllCourseAssignmnet()
+        public List<CourseAssignment> GetAll( int courseId)
         {
-            return context.CourseAssignments.ToList();
+            var course = context.Courses
+            .Include(c => c.CourseAssignments)
+            .SingleOrDefault(coursen => coursen.Id == courseId);
+
+            return course.CourseAssignments;
         }
 
         public CourseAssignment FindCourseAssignment(int id)

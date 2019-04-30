@@ -31,11 +31,11 @@ namespace SchoolMangementdb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddTeacher([Bind("Name,Discription")] Teacher teacher)
+        public IActionResult AddTeacher([Bind("Name,Description")] Teacher teacher)
         {
             if (ModelState.IsValid)
             {
-                teacher = teacherService.AddTeacher(teacher.Name, teacher.Discription);
+                teacher = teacherService.AddTeacher(teacher.Name, teacher.Description);
                 return RedirectToAction(nameof(Index));
             }
 

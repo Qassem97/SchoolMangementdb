@@ -9,8 +9,8 @@ namespace SchoolMangementdb.Models
     {
         public int Id { get; set; } //CourseId
 
-        public string Name { get; set; } //Title
-        public string Discription { get; set; }
+        public string Name { get; set; } 
+        public string Description { get; set; }
 
         public int? TeacherId { get; set; } // not exsist
         public Teacher Teacher { get; set; }
@@ -20,7 +20,7 @@ namespace SchoolMangementdb.Models
             //= new List<CourseAssignment>();
 
         //Assignmnets
-        public IList<StudentsCourses> StudentsCourses { get; set; }
+        public List<StudentsCourses> StudentsCourses { get; set; }
             //= new List<StudentsCourses>();
 
     }

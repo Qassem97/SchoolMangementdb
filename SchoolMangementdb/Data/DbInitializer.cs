@@ -10,8 +10,6 @@ namespace SchoolMangementdb.Data
     {
         public static void Initialize(SchoolContextdb context)
         {
-            context.Database.EnsureCreated();
-
             if (context.Courses.Any())
             {
                 return;
@@ -20,11 +18,11 @@ namespace SchoolMangementdb.Data
             // Intialize 5 students
             var students = new[]
             {
-                new Student { Name = "Alle" },
-                new Student { Name = "Hanna" },
-                new Student { Name = "Sara" },
-                new Student { Name = "lala" },
-                new Student { Name = "Tala" }
+                new Student { Name = "Alle" , Number = "087653475", City = "Alvesta" },
+                new Student { Name = "Hanna", Number = "345674895", City = "Växjö" },
+                new Student { Name = "Sara" , Number = "345676789", City = "Jönköping" },
+                new Student { Name = "lala" , Number = "234566878", City = "Ryd" },
+                new Student { Name = "Tala" , Number = "234567879", City = "Nässjö" }
             };
 
             // Intialize 9 courses with the assignments for each course
@@ -36,14 +34,14 @@ namespace SchoolMangementdb.Data
                     Description = "The course covers the basic in c#.",
                     CourseAssignments = new List<CourseAssignment>
                     {
-                        new CourseAssignment() { Name = "LABA - Laboratory Work" },
-                        new CourseAssignment() { Name = "TENA - Examination" }
+                        new CourseAssignment() { Name = "LINA - Laboratory Work" },
+                        new CourseAssignment() { Name = "DANA - Examination" }
                     }
                 },
                 new Course
                 {
                     Name = "JavaScript Basic",
-                    Description = "Number System and Codes. Binary Arithmetic. Booolean algebra and Booolean functions. Logic operations. Logic gates. Optimisation methods. Combinational function blocks. Digital arithmetic. Design of combinational circuits. Latches and Flips-Flops. Counters. Sequential circuits. Finite state diagrams. Finite state machine of Mealy and Moore type. Asynchronous sequential circuits. Design of synchronous and asynchronous sequential circuits. Programmable logic. Introduction to VHDL. Memory. Fundamental MOS-technology.",
+                    Description = "Number System and Codes. Binary Arithmetic.Booolean functions. Logic operations. Logic gates. Optimisation methods. Combinational function blocks. Digital arithmetic. Design of combinational circuits. Latches and Flips-Flops. Counters. Sequential circuits. Finite state diagrams. Finite state machine of Mealy and Moore type. Asynchronous sequential circuits. Design of synchronous and asynchronous sequential circuits. Programmable logic. Introduction to VHDL. Memory. Fundamental MOS-technology.",
                     CourseAssignments = new List<CourseAssignment>
                     {
                         new CourseAssignment() { Name = "Assignment 1" },

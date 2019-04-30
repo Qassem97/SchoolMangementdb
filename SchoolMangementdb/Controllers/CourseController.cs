@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SchoolMangementdb.Models;
 using SchoolMangementdb.Models.Services;
+using SchoolMangementdb.Models.V.Model;
 using SchoolMangementdb.Services;
 
 namespace SchoolMangementdb.Controllers
@@ -34,38 +35,37 @@ namespace SchoolMangementdb.Controllers
             return View();
         }
 
-        public IActionResult AddCourseAssignment( int CourseId)
-        {
-            var vm = new AssignmentVM
-            {
-                CourseID = CourseId
-            };
-
-            return View(vm);
-        }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddCourse([Bind("Name, Discription")] Course course)
+        public IActionResult AddCourse([Bind("Name, Description")] Course course)
         {
             if (ModelState.IsValid)
             {
-                course = CourseRepo.AddCourse(course.Name, course.Discription);
+                course = CourseRepo.AddCourse(course.Name, course.Description);
                 return RedirectToAction(nameof(Index));
             }
             return View(course);
         }
 
+        public IActionResult AddCourseAssignment(int courseId)
+        {
+            var vm = new AssignmentVModel
+            {
+                CourseId = courseId
+            };
+
+            return View(vm);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddCourseAssignment(CourseAssignment assignment, int CourseId)//för att skappa assig till course use class assig o course id
+        public IActionResult AddCourseAssignment(CourseAssignment assignment, int CourseId)//class assignment and courseid needed, to add Assignment to course
         {
             if (ModelState.IsValid)
             {
-                CourseAssignmentRepo.AddCourseAssignment(assignment, CourseId);//samma posion som i interfase
+                CourseAssignmentRepo.AddCourseAssignment(assignment, CourseId);
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = CourseId });
             }
             return View(assignment);
         }
@@ -82,12 +82,12 @@ namespace SchoolMangementdb.Controllers
             {
                 return NotFound();
             }
-            //CourseVM will be used her in the controller
-            CourseVM name = new CourseVM
+            
+            EditCourseVM name = new EditCourseVM 
             {
-                Id = course.Id,
+                CourseId = course.Id,
                 Name = course.Name,
-                Description = course.Discription,
+                Description = course.Description,
                 Teachers = TeacherRepo.GetAll(),
             };
             return View(name);
@@ -95,33 +95,32 @@ namespace SchoolMangementdb.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(CourseVM course)
+        public IActionResult Edit(EditCourseVM course)
         {
             if (ModelState.IsValid)
             {
-                var teacherF = TeacherRepo.GetAll(course.TeacherId);//använda hitta teacher
+                var teacherF = TeacherRepo.FindTeacher(course.TeacherId);
 
                 var courseToUpdate = new Course
                 {
-                    Name = course.Namr,
-                    Discription = course.Discription,
+                    Name = course.Name,
+                    Description = course.Description,
                     Teacher = teacherF,
-                    Id = course.Id
+                    Id = course.CourseId
                 };
                 CourseRepo.UpdateCourse(courseToUpdate);
                 return RedirectToAction(nameof(Index));
             }
 
-            CourseViewModel CourseViewModel = new CourseViewModel();
-           //
+            course.Teachers = TeacherRepo.GetAll();
             return View(course);
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int? id)  // Magic here-
         {
             if (id != null)
             {
-                CourseRepo.RemovCourse((int)id);
+                CourseRepo.RemovCourse((int)id); /// crazy idea..! not reasonale
                 CourseAssignmentRepo.RemovCourseAssignment((int)id);
                 return RedirectToAction(nameof(Index));
             }
@@ -141,22 +140,22 @@ namespace SchoolMangementdb.Controllers
                 return NotFound();
             }
 
-            CourseViewModel CourseViewModel = new CourseViewModel();//först kalla vm vilket innehåller LIST dem som vill du hantera
-            CourseViewModel.Course = course;
+            CourseVModel CourseVModel = new CourseVModel();// LIST from VModel
+            CourseVModel.Course = course;
 
-            CourseViewModel.CourseAssignments = course.CourseAssignments;//inte allAssignments 
+            CourseVModel.Assignments = course.CourseAssignments;
 
             //++
-            List<Student> studentsNotInCourse = StudentRepo.GetAll();//för att visa all dem som ej koplat till courses
+            List<Student> studentsNotInCourse = StudentRepo.GetAll().ToList();//to show students that is NotInCourse
 
             foreach (var item in course.StudentsCourses)
             {
                 studentsNotInCourse.Remove(item.Student);
             }
 
-            CourseViewModel.Students = studentsNotInCourse;// lägg till vm.alla studenter eller vad som helst
+            CourseVModel.Students = studentsNotInCourse;
             //++
-            return View(CourseViewModel);
+            return View(CourseVModel);
         }
 
 
@@ -174,7 +173,7 @@ namespace SchoolMangementdb.Controllers
                 return NotFound();
             }
 
-            foreach (var item in course.StudentsCourses)//kontrolerar om eleven redan finns
+            foreach (var item in course.StudentsCourses)//is there student 
             {
                 if (item.StudentId == sId)
                 {
@@ -182,12 +181,12 @@ namespace SchoolMangementdb.Controllers
                 }
             }
 
-            CourseRepo.AddStudentToCourse(course, student);//koplar student course med varandra        
+            CourseRepo.AddStudentToCourse(course, student);//relationship student + course        
 
             return RedirectToAction(nameof(Details), new { id = cId });
         }
 
-        public IActionResult RemoveStudentToCourse(int cId, int sId)//ybrat iz coursa
+        public IActionResult RemoveStudentToCourse(int cId, int sId)
         {
             var course = CourseRepo.FindCourse(cId);
             if (course == null)
@@ -195,7 +194,7 @@ namespace SchoolMangementdb.Controllers
                 return NotFound();
             }
 
-            CourseRepo.RemoveStudentToCourse(course, sId);//ispolzovat method iz courseservica RemoveStudentToCourse
+            CourseRepo.RemoveStudentToCourse(course, sId);
 
             return RedirectToAction(nameof(Details), new { id = cId });
         }

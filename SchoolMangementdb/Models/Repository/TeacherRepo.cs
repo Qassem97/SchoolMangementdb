@@ -21,13 +21,13 @@ namespace SchoolMangementdb.Models.Repository
         }
         public Teacher AddTeacher(string name, string discription)
         {
-            Teacher teacher = new Teacher() { Name = name, Discription = discription };
+            Teacher teacher = new Teacher() { Name = name, Description = discription };
             context.Teachers.Add(teacher);
             context.SaveChanges();
             return teacher;
         }
 
-        public IEnumerable<Teacher> GetAll()
+        public List<Teacher> GetAll()
         {
             return context.Teachers
                 .Include(t => t.Courses)
@@ -48,7 +48,7 @@ namespace SchoolMangementdb.Models.Repository
                 if (teacheren != null)
                 {
                     teacheren.Name = teacher.Name;
-                    teacheren.Discription = teacher.Discription;
+                    teacheren.Description = teacher.Description;
 
                     if (teacher.Courses != null)
                     {

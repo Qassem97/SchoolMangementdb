@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SchoolMangementdb.Models
+namespace SchoolMangementdb.Models.V.Model
 {
-    public class Teacher
+    public class AssignmentVModel
     {
+        public string Name { get; set; }
+
+        public string Description { get; set; }
 
         public int Id { get; set; }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
-
-        public List<Course> Courses { get; set; }
+        public int CourseId { get; set; }
     }
 }

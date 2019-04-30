@@ -26,7 +26,7 @@ namespace SchoolMangementdb.Models.Repository
             Course course = new Course()
             {
                 Name = name,
-                Discription = discription
+                Description = discription
             };
             context.Courses.Add(course);
             context.SaveChanges();
@@ -75,7 +75,7 @@ namespace SchoolMangementdb.Models.Repository
             if (oldCourse != null)
             {
                 oldCourse.Name = course.Name;
-                oldCourse.Discription = course.Discription;
+                oldCourse.Description = course.Description;
 
                 if (course.Teacher != null)
                 {

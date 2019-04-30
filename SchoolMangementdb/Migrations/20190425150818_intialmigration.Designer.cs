@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolMangementdb.Data;
 
 namespace SchoolMangementdb.Migrations
 {
     [DbContext(typeof(SchoolContextdb))]
-    partial class SchoolContextdbModelSnapshot : ModelSnapshot
+    [Migration("20190425150818_intialmigration")]
+    partial class intialmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

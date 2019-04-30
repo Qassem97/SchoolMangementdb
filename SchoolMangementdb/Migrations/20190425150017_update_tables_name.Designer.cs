@@ -10,8 +10,8 @@ using SchoolMangementdb.Data;
 namespace SchoolMangementdb.Migrations
 {
     [DbContext(typeof(SchoolContextdb))]
-    [Migration("20190423120435_init")]
-    partial class init
+    [Migration("20190425150017_update_tables_name")]
+    partial class update_tables_name
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,7 +46,9 @@ namespace SchoolMangementdb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CourseId");
+                    b.Property<int?>("CourseId");
+
+                    b.Property<string>("Description");
 
                     b.Property<string>("Name");
 
@@ -63,7 +65,12 @@ namespace SchoolMangementdb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("City")
+                        .IsRequired();
+
                     b.Property<string>("Name");
+
+                    b.Property<string>("Number");
 
                     b.HasKey("Id");
 
@@ -89,6 +96,8 @@ namespace SchoolMangementdb.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description");
+
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
@@ -106,10 +115,9 @@ namespace SchoolMangementdb.Migrations
 
             modelBuilder.Entity("SchoolMangementdb.Models.CourseAssignment", b =>
                 {
-                    b.HasOne("SchoolMangementdb.Models.Course", "Course")
+                    b.HasOne("SchoolMangementdb.Models.Course")
                         .WithMany("CourseAssignments")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CourseId");
                 });
 
             modelBuilder.Entity("SchoolMangementdb.Models.StudentsCourses", b =>

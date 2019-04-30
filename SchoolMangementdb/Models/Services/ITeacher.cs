@@ -8,7 +8,7 @@ namespace SchoolMangementdb.Models.Services
 {
     public interface ITeacher
     {
-        IEnumerable<Teacher> GetAll();
+        List<Teacher> GetAll();
 
         Teacher FindTeacher(int id);
         Teacher AddTeacher(string name, string discription);
